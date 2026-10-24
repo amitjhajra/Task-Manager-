@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" font-family="Inter, 'Segoe UI', Arial, sans-serif">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.18"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#8B9BB8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <clipPath id="c1"><circle cx="64" cy="355" r="44"/></clipPath>
+    <clipPath id="c2"><circle cx="864" cy="355" r="44"/></clipPath>
+  </defs>
+
+  <!-- Connectors -->
+  <g fill="none" stroke="#8B9BB8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M340 111 H206 V296" stroke-dasharray="9 7" marker-end="url(#arrow)"/>
+    <path d="M860 111 H994 V296" stroke-dasharray="9 7" marker-end="url(#arrow)"/>
+    <path d="M206 414 V589 H336" stroke-dasharray="9 7" marker-end="url(#arrow)"/>
+    <path d="M994 414 V589 H864" stroke-dasharray="9 7" marker-end="url(#arrow)"/>
+    <path d="M432 355 H768" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- TOP TASK CARD -->
+  <g filter="url(#shadow)">
+    <rect x="340" y="6" width="520" height="210" rx="14" fill="#fff"/>
+  </g>
+  <text x="372" y="58" font-size="26" font-weight="600" fill="#1e293b">Website Redesign</text>
+  <g fill="#94a3b8"><circle cx="828" cy="42" r="2.6"/><circle cx="828" cy="52" r="2.6"/><circle cx="828" cy="62" r="2.6"/></g>
+  <rect x="372" y="74" width="88" height="30" rx="15" fill="#e0e7ff"/>
+  <text x="416" y="94" font-size="14" fill="#4f5fa8" text-anchor="middle">In Progress</text>
+  <rect x="470" y="74" width="122" height="30" rx="15" fill="#fde8c4"/>
+  <text x="531" y="94" font-size="14" fill="#a8641a" text-anchor="middle">High Priority</text>
+  <rect x="372" y="122" width="456" height="7" rx="3.5" fill="#e5e7eb"/>
+  <rect x="372" y="122" width="274" height="7" rx="3.5" fill="#22c55e"/>
+  <text x="372" y="156" font-size="15" fill="#334155">Tasks done 6/10</text>
+  <text x="372" y="184" font-size="13" fill="#64748b">Start date</text>
+  <text x="372" y="204" font-size="14" font-weight="500" fill="#1e293b">Nov 3, 2026</text>
+  <text x="480" y="184" font-size="13" fill="#64748b">Due date</text>
+  <text x="480" y="204" font-size="14" font-weight="500" fill="#1e293b">Dec 20, 2026</text>
+  <!-- avatar stack -->
+  <g>
+    <circle cx="738" cy="186" r="19" fill="#c4b5fd" stroke="#fff" stroke-width="3"/>
+    <circle cx="738" cy="181" r="7" fill="#f6c9a8"/><path d="M724 200 a14 11 0 0 1 28 0z" fill="#7c5cd6"/>
+    <circle cx="772" cy="186" r="19" fill="#86efac" stroke="#fff" stroke-width="3"/>
+    <circle cx="772" cy="181" r="7" fill="#e9b98f"/><path d="M758 200 a14 11 0 0 1 28 0z" fill="#16a34a"/>
+    <circle cx="806" cy="186" r="19" fill="#fcd34d" stroke="#fff" stroke-width="3"/>
+    <circle cx="806" cy="181" r="7" fill="#f6c9a8"/><path d="M792 200 a14 11 0 0 1 28 0z" fill="#e08a00"/>
+  </g>
+
+  <!-- LEFT PERSON CARD -->
+  <g filter="url(#shadow)">
+    <rect x="6" y="300" width="420" height="110" rx="14" fill="#fff"/>
+  </g>
+  <circle cx="64" cy="355" r="44" fill="#c4b5fd"/>
+  <g clip-path="url(#c1)">
+    <circle cx="64" cy="345" r="16" fill="#f1c4a0"/>
+    <path d="M46 342 a18 18 0 0 1 36 0 q-18 -8 -36 0z" fill="#3b2a20"/>
+    <path d="M26 400 a38 30 0 0 1 76 0z" fill="#f59e0b"/>
+  </g>
+  <text x="126" y="346" font-size="25" font-weight="600" fill="#1e293b">Aarav Mehta</text>
+  <text x="126" y="376" font-size="17" fill="#475569">Project Lead</text>
+
+  <!-- RIGHT PERSON CARD -->
+  <g filter="url(#shadow)">
+    <rect x="794" y="300" width="400" height="110" rx="14" fill="#fff"/>
+  </g>
+  <circle cx="864" cy="355" r="44" fill="#86efac"/>
+  <g clip-path="url(#c2)">
+    <circle cx="864" cy="345" r="16" fill="#e9b98f"/>
+    <path d="M846 344 a18 18 0 0 1 36 0 q-6 -10 -18 -10 q-12 0 -18 10z" fill="#c2410c"/>
+    <path d="M826 400 a38 30 0 0 1 76 0z" fill="#1e3a5f"/>
+  </g>
+  <text x="926" y="346" font-size="25" font-weight="600" fill="#1e293b">Sara Khan</text>
+  <text x="926" y="376" font-size="17" fill="#475569">UI Designer</text>
+
+  <!-- BOTTOM TASK CARD -->
+  <g filter="url(#shadow)">
+    <rect x="340" y="484" width="520" height="210" rx="14" fill="#fff"/>
+  </g>
+  <text x="372" y="536" font-size="26" font-weight="600" fill="#1e293b">Mobile App Launch</text>
+  <g fill="#94a3b8"><circle cx="828" cy="520" r="2.6"/><circle cx="828" cy="530" r="2.6"/><circle cx="828" cy="540" r="2.6"/></g>
+  <rect x="372" y="552" width="88" height="30" rx="15" fill="#e0e7ff"/>
+  <text x="416" y="572" font-size="14" fill="#4f5fa8" text-anchor="middle">In Progress</text>
+  <rect x="470" y="552" width="140" height="30" rx="15" fill="#fde8c4"/>
+  <text x="540" y="572" font-size="14" fill="#a8641a" text-anchor="middle">Medium Priority</text>
+  <rect x="372" y="600" width="456" height="7" rx="3.5" fill="#e5e7eb"/>
+  <rect x="372" y="600" width="182" height="7" rx="3.5" fill="#22c55e"/>
+  <text x="372" y="634" font-size="15" fill="#334155">Tasks done 4/10</text>
+  <text x="372" y="662" font-size="13" fill="#64748b">Start date</text>
+  <text x="372" y="682" font-size="14" font-weight="500" fill="#1e293b">Nov 10, 2026</text>
+  <text x="480" y="662" font-size="13" fill="#64748b">Due date</text>
+  <text x="480" y="682" font-size="14" font-weight="500" fill="#1e293b">Jan 15, 2027</text>
+  <g>
+    <circle cx="772" cy="664" r="19" fill="#c4b5fd" stroke="#fff" stroke-width="3"/>
+    <circle cx="772" cy="659" r="7" fill="#f6c9a8"/><path d="M758 678 a14 11 0 0 1 28 0z" fill="#f59e0b"/>
+    <circle cx="806" cy="664" r="19" fill="#86efac" stroke="#fff" stroke-width="3"/>
+    <circle cx="806" cy="659" r="7" fill="#e9b98f"/><path d="M792 678 a14 11 0 0 1 28 0z" fill="#1e3a5f"/>
+  </g>
+</svg>
