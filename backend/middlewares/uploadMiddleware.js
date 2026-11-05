@@ -20,7 +20,7 @@ const fileFilter = (req,file,cb)=>{
     cb(null,true);
 
   }else{
-    cb(newError('only.jpeg  .jpg and .png formats are allowed'),false);
+    cb(new Error('only.jpeg  .jpg and .png formats are allowed'),false);
   }
 }
 
