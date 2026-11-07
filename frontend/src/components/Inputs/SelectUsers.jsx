@@ -35,9 +35,12 @@ const SelectUsers = ({ selectedUsers, setselectedUsers }) => {
     setisModalOpen(false);
   };
 
-  const selectedUserAvatars = allUsers
-    .filter((user) => selectedUsers.includes(user._id))
-    .map((user) => user.profileImageUrl);
+const selectedUserAvatars = allUsers
+  .filter((user) => selectedUsers.includes(user._id))
+  .map((user) => ({
+    url: user.profileImageUrl,
+    name: user.name,
+  }));
 
   useEffect(() => {
     getAllUsers();
