@@ -8,6 +8,7 @@
     const {user,clearUser} = useContext(UserContext);
     const [sideMenuData, setsideMenuData] = useState([]);
     const navigate = useNavigate();
+    
 
     const handleClick =(route)=>{
       if(route === 'logout'){
