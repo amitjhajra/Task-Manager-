@@ -43,7 +43,7 @@ const taskSchema = new mongoose.Schema ({
       ref:'user'
     }
   ],
-  attachements:[{
+  attachments:[{
     type:String,
   }],
   todoChecklist:[todoSchema],

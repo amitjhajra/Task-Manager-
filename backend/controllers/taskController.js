@@ -1,5 +1,4 @@
-
-const taskModel = require('../models/Task');
+const taskModel = require("../models/Task");
 
 // Get all tasks (admin: all tasks, user: assigned tasks)
 // Route: GET /api/tasks
@@ -15,7 +14,7 @@ const getTasks = async (req, res) => {
 
     let tasks;
 
-    if (req.user.role === 'admin') {
+    if (req.user.role === "admin") {
       tasks = await taskModel
         .find(filter)
         .populate("assignedTo", "name email profileImageUrl");
@@ -29,45 +28,43 @@ const getTasks = async (req, res) => {
     tasks = await Promise.all(
       tasks.map(async (task) => {
         const completedCount = task.todoChecklist.filter(
-          (item) => item.completed
+          (item) => item.completed,
         ).length;
 
         return {
           ...task._doc,
-          completedTodoCount: completedCount
+          completedTodoCount: completedCount,
         };
-      })
+      }),
     );
 
     // Status summary counts
     const allTasks = await taskModel.countDocuments(
-      req.user.role === 'admin'
-        ? {}
-        : { assignedTo: req.user._id }
+      req.user.role === "admin" ? {} : { assignedTo: req.user._id },
     );
 
     const pendingTasks = await taskModel.countDocuments({
       ...filter,
       status: "Pending",
-      ...(req.user.role !== 'admin' && {
-        assignedTo: req.user._id
-      })
+      ...(req.user.role !== "admin" && {
+        assignedTo: req.user._id,
+      }),
     });
 
     const inProgressTasks = await taskModel.countDocuments({
       ...filter,
       status: "In Progress",
-      ...(req.user.role !== 'admin' && {
-        assignedTo: req.user._id
-      })
+      ...(req.user.role !== "admin" && {
+        assignedTo: req.user._id,
+      }),
     });
 
     const completedTasks = await taskModel.countDocuments({
       ...filter,
       status: "Completed",
-      ...(req.user.role !== 'admin' && {
-        assignedTo: req.user._id
-      })
+      ...(req.user.role !== "admin" && {
+        assignedTo: req.user._id,
+      }),
     });
 
     res.json({
@@ -77,19 +74,17 @@ const getTasks = async (req, res) => {
         all: allTasks,
         pendingTasks,
         inProgressTasks,
-        completedTasks
-      }
+        completedTasks,
+      },
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
       error: error.message,
-      success: false
+      success: false,
     });
   }
 };
-
 
 // Get task by ID
 // Route: GET /api/tasks/:id
@@ -98,30 +93,28 @@ const getTaskById = async (req, res) => {
   try {
     const task = await taskModel
       .findById(req.params.id)
-      .populate('assignedTo', 'name email profileImageUrl');
+      .populate("assignedTo", "name email profileImageUrl");
 
     if (!task) {
       return res.status(404).json({
         success: false,
-        message: "Task not found"
+        message: "Task not found",
       });
     }
 
     res.json({
       success: true,
       message: "Task fetched successfully",
-      task
+      task,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
       error: error.message,
-      success: false
+      success: false,
     });
   }
 };
-
 
 // Create a new task (admin only)
 // Route: POST /api/tasks
@@ -135,13 +128,13 @@ const createTask = async (req, res) => {
       dueDate,
       assignedTo,
       attachments,
-      todoChecklist
+      todoChecklist,
     } = req.body;
 
     if (!Array.isArray(assignedTo)) {
       return res.status(400).json({
         success: false,
-        message: "assignedTo must be an array of users id"
+        message: "assignedTo must be an array of users id",
       });
     }
 
@@ -153,24 +146,22 @@ const createTask = async (req, res) => {
       assignedTo,
       createdBy: req.user._id,
       todoChecklist,
-      attachments
+      attachments,
     });
 
     res.status(201).json({
       message: "Task created successfully",
       success: true,
-      task
+      task,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
       error: error.message,
-      success: false
+      success: false,
     });
   }
 };
-
 
 // Update task details
 // Route: PUT /api/tasks/:id
@@ -181,7 +172,7 @@ const updateTask = async (req, res) => {
 
     if (!task) {
       return res.status(404).json({
-        message: "Task not found"
+        message: "Task not found",
       });
     }
 
@@ -195,7 +186,7 @@ const updateTask = async (req, res) => {
     if (req.body.assignedTo) {
       if (!Array.isArray(req.body.assignedTo)) {
         return res.status(400).json({
-          message: "assignedTo must be an array of user IDs"
+          message: "assignedTo must be an array of user IDs",
         });
       }
 
@@ -207,18 +198,16 @@ const updateTask = async (req, res) => {
     res.json({
       message: "Task updated successfully",
       success: true,
-      task: updatedTask
+      task: updatedTask,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
       error: error.message,
-      success: false
+      success: false,
     });
   }
 };
-
 
 // Delete a task (admin only)
 // Route: DELETE /api/tasks/:id
@@ -230,21 +219,23 @@ const deleteTask = async (req, res) => {
     if (!task) {
       return res.status(404).json({
         success: false,
-        message: "Task not found"
+        message: "Task not found",
       });
     }
 
     await task.deleteOne();
-
+    return res.status(200).json({
+      success: true,
+      message: "Task deleted successfully",
+    });
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
       error: error.message,
-      success: false
+      success: false,
     });
   }
 };
-
 
 // Update task status
 // Route: PUT /api/tasks/:id/status
@@ -256,18 +247,18 @@ const updateTaskStatus = async (req, res) => {
     if (!task) {
       return res.status(404).json({
         success: false,
-        message: "Task not found"
+        message: "Task not found",
       });
     }
 
     const isAssigned = task.assignedTo.some(
-      (userId) => userId.toString() === req.user._id.toString()
+      (userId) => userId.toString() === req.user._id.toString(),
     );
 
-    if (!isAssigned && req.user.role !== 'admin') {
+    if (!isAssigned && req.user.role !== "admin") {
       return res.status(403).json({
         success: false,
-        message: "Authorization denied"
+        message: "Authorization denied",
       });
     }
 
@@ -286,18 +277,16 @@ const updateTaskStatus = async (req, res) => {
     res.json({
       success: true,
       message: "Task status updated successfully",
-      task
+      task,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
       error: error.message,
-      success: false
+      success: false,
     });
   }
 };
-
 
 // Update task checklist
 // Route: PUT /api/tasks/:id/todo
@@ -310,19 +299,19 @@ const updateTaskChecklist = async (req, res) => {
     if (!task) {
       return res.status(404).json({
         success: false,
-        message: "Task not found"
+        message: "Task not found",
       });
     }
 
     if (
       !task.assignedTo.some(
-        (userId) => userId.toString() === req.user._id.toString()
+        (userId) => userId.toString() === req.user._id.toString(),
       ) &&
-      req.user.role !== 'admin'
+      req.user.role !== "admin"
     ) {
       return res.status(403).json({
         success: false,
-        message: "Not authorized to update checklist"
+        message: "Not authorized to update checklist",
       });
     }
 
@@ -331,14 +320,13 @@ const updateTaskChecklist = async (req, res) => {
 
     // Automatically update progress based on checklist completion
     const completedCount = task.todoChecklist.filter(
-      (item) => item.completed
+      (item) => item.completed,
     ).length;
 
     const totalItems = task.todoChecklist.length;
 
-    task.progress = totalItems > 0
-      ? Math.round((completedCount / totalItems) * 100)
-      : 0;
+    task.progress =
+      totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
 
     // Automatically update status based on progress
     if (task.progress === 100) {
@@ -353,23 +341,21 @@ const updateTaskChecklist = async (req, res) => {
 
     const updatedTask = await taskModel
       .findById(req.params.id)
-      .populate('assignedTo', 'name email profileImageUrl');
+      .populate("assignedTo", "name email profileImageUrl");
 
     res.json({
       success: true,
       message: "Task checklist updated successfully",
-      task: updatedTask
+      task: updatedTask,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
       error: error.message,
-      success: false
+      success: false,
     });
   }
 };
-
 
 // Dashboard data (admin only)
 // Route: GET /api/tasks/dashboard-data
@@ -380,40 +366,35 @@ const getDashboardData = async (req, res) => {
     const totalTasks = await taskModel.countDocuments();
 
     const pendingTasks = await taskModel.countDocuments({
-      status: "Pending"
+      status: "Pending",
     });
 
     const completedTasks = await taskModel.countDocuments({
-      status: "Completed"
+      status: "Completed",
     });
 
     const overdueTasks = await taskModel.countDocuments({
       status: { $ne: "Completed" },
-      dueDate: { $lt: new Date() }
+      dueDate: { $lt: new Date() },
     });
 
     // Get task distribution by status
-    const taskStatuses = [
-      "Pending",
-      "In Progress",
-      "Completed"
-    ];
+    const taskStatuses = ["Pending", "In Progress", "Completed"];
 
     const taskDistributionRaw = await taskModel.aggregate([
       {
         $group: {
           _id: "$status",
-          count: { $sum: 1 }
-        }
-      }
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     const taskDistribution = taskStatuses.reduce((acc, status) => {
       const formattedKey = status.replace(/\s+/g, "");
 
-      acc[formattedKey] = taskDistributionRaw.find(
-        (item) => item._id === status
-      )?.count || 0;
+      acc[formattedKey] =
+        taskDistributionRaw.find((item) => item._id === status)?.count || 0;
 
       return acc;
     }, {});
@@ -428,15 +409,14 @@ const getDashboardData = async (req, res) => {
       {
         $group: {
           _id: "$priority",
-          count: { $sum: 1 }
-        }
-      }
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     const taskPriorityLevels = taskPriorities.reduce((acc, priority) => {
-      acc[priority] = taskPriorityLevelsRaw.find(
-        (item) => item._id === priority
-      )?.count || 0;
+      acc[priority] =
+        taskPriorityLevelsRaw.find((item) => item._id === priority)?.count || 0;
 
       return acc;
     }, {});
@@ -453,24 +433,22 @@ const getDashboardData = async (req, res) => {
         totalTasks,
         pendingTasks,
         completedTasks,
-        overdueTasks
+        overdueTasks,
       },
       charts: {
         taskDistribution,
-        taskPriorityLevels
+        taskPriorityLevels,
       },
-      recentTasks
+      recentTasks,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
       error: error.message,
-      success: false
+      success: false,
     });
   }
 };
-
 
 // Dashboard data (user-specific)
 // Route: GET /api/tasks/user-dashboard-data
@@ -481,73 +459,69 @@ const getUserDashboardData = async (req, res) => {
 
     // Fetch statistics for the logged-in user
     const totalTasks = await taskModel.countDocuments({
-      assignedTo: userId
+      assignedTo: userId,
     });
 
     const pendingTasks = await taskModel.countDocuments({
       assignedTo: userId,
-      status: "Pending"
+      status: "Pending",
     });
 
     const completedTasks = await taskModel.countDocuments({
       assignedTo: userId,
-      status: "Completed"
+      status: "Completed",
     });
 
     const overdueTasks = await taskModel.countDocuments({
       assignedTo: userId,
       status: { $ne: "Completed" },
-      dueDate: { $lt: new Date() }
+      dueDate: { $lt: new Date() },
     });
 
     // Task distribution by status
-    const taskStatuses = [
-      "Pending",
-      "In Progress",
-      "Completed"
-    ];
+    const taskStatuses = ["Pending", "In Progress", "Completed"];
 
     const taskDistributionRaw = await taskModel.aggregate([
       {
-        $match: { assignedTo: userId }
+        $match: { assignedTo: userId },
       },
       {
         $group: {
           _id: "$status",
-          count: { $sum: 1 }
-        }
-      }
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     const taskDistribution = taskStatuses.reduce((acc, status) => {
       const formattedKey = status.replace(/\s+/g, "");
 
-      acc[formattedKey] = taskDistributionRaw.find(
-        (item) => item._id === status
-      )?.count || 0;
+      acc[formattedKey] =
+        taskDistributionRaw.find((item) => item._id === status)?.count || 0;
 
       return acc;
     }, {});
+    // Add total task count
+    taskDistribution.All = totalTasks;
 
     // Task distribution by priority
     const taskPriorities = ["Low", "Medium", "High"];
 
     const taskPriorityLevelsRaw = await taskModel.aggregate([
       {
-        $match: { assignedTo: userId }
+        $match: { assignedTo: userId },
       },
       {
         $group: {
           _id: "$priority",
-          count: { $sum: 1 }
-        }
-      }
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     const taskPriorityLevels = taskPriorities.reduce((acc, priority) => {
-      acc[priority] = taskPriorityLevelsRaw.find(
-        (item) => item._id === priority
-      )?.count || 0;
+      acc[priority] =
+        taskPriorityLevelsRaw.find((item) => item._id === priority)?.count || 0;
 
       return acc;
     }, {});
@@ -563,24 +537,22 @@ const getUserDashboardData = async (req, res) => {
         totalTasks,
         pendingTasks,
         completedTasks,
-        overdueTasks
+        overdueTasks,
       },
       charts: {
         taskDistribution,
-        taskPriorityLevels
+        taskPriorityLevels,
       },
-      recentTasks
+      recentTasks,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
       error: error.message,
-      success: false
+      success: false,
     });
   }
 };
-
 
 module.exports = {
   getTasks,
@@ -591,5 +563,5 @@ module.exports = {
   updateTaskStatus,
   updateTaskChecklist,
   getDashboardData,
-  getUserDashboardData
+  getUserDashboardData,
 };
